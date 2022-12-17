@@ -17,11 +17,11 @@ import {
 import {REACT_APP_API_KEY} from "@env";
  
 const API_KEY = process.env.REACT_APP_API_KEY
-// let LOCATION = London
+//let LOCATION
  
 function WeatherApp(){
     const [data, setData] = useState([])
-    const [searchLocation, setSearchLocation] = useState("")
+    // const [searchLocation, setSearchLocation] = useState("")
     const[i, setI] = useState(0)
  
     const url = `http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=${API_KEY}`
@@ -29,14 +29,8 @@ function WeatherApp(){
     const dates = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     const temperatures = [20, 21, 26, 19, 30, 32, 23, 22, 24]
     const cities = ['LA', 'SAN', 'SFO', 'LGA', 'HND', 'KIX', 'DEN', 'MUC', 'BOM']
- 
-    console.log(url)
-    fetch(url, {
-        method: 'GET'
-    })
-    .then(response => response.json())
-    .then(response => console.log(response.city.name))
 
+    // console.log(LOCATION)
     const buttonPressed = () => {
         if(i < 9){
             data.push(
@@ -50,16 +44,31 @@ function WeatherApp(){
             setI(i => i + 1)
         }
     }
-    useEffect(()=>{}, [i])
+
+    const getLocation = async() => {
+        return fetch(url, {
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(json => {
+            console.log(json.city.name)
+            return json})
+        .catch((e) => console.error(e))
+    }
+
+    useEffect(()=>{
+        getLocation()
+    }, [i])
     return(
         <View style = {styles.appBackground}>
+
             <View style = {styles.searchBar}>
                 <TextInput style = {styles.searchText} placeholder = "Search City"></TextInput>
                 <Text onPress={() => buttonPressed()} style = {styles.addButton}>+</Text>
             </View>
              
             {/* ScrollView can only have one view in it */}
-            <ScrollView style = {styles.weatherPanel} >
+            <ScrollView style = {styles.weatherPanel}>
                 <View>
                     {data}
                 </View>
