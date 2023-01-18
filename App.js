@@ -30,9 +30,9 @@ function WeatherApp(){
         const [cities, setCities] = useState([])
         const[i, setI] = useState(0)
     
-        const url_weather = `http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=${API_KEY}`
+        const url_weather = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}`
     
-        const url_location = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&appid=${API_KEY}`
+        // const url_location = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&appid=${API_KEY}`
 
         const dates = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         const temperatures = [20, 21, 26, 19, 30, 32, 23, 22, 24]
@@ -50,12 +50,12 @@ function WeatherApp(){
         //     .catch((e) => console.error(e))
         // }
 
-        const get_location = async() => {
-            const res = await fetch(url_location);
-            const json = await res.json();
-            setData(JSON.parse(json));
-            setCities(json.slice());
-        }
+        // const get_location = async() => {
+        //     const res = await fetch(url_location);
+        //     const json = await res.json();
+        //     setData(JSON.parse(json));
+        //     setCities(json.slice());
+        // }
 
         // 2) apply the given location to get weather
         const get_weather = async() => {
@@ -82,7 +82,7 @@ function WeatherApp(){
         }
 
         useEffect(()=>{
-            get_location()
+            // get_location()
             get_weather()
         }, [i], [])
 
@@ -92,11 +92,11 @@ function WeatherApp(){
 
                 <View style = {styles.searchBar}>
                     <TextInput style = {styles.searchText} placeholder = "Search City"></TextInput>
-                    <FlatList data={cities} keyExtractor = {(i) => i.id.toString()} 
+                    {/* <FlatList data={cities} keyExtractor = {(i) => i.id.toString()} 
                         extraData = {query} renderItem = {({item}) => 
                             <Text style = {styles.flatlist}> {`${item.name}`}</Text>
                         
-                        }></FlatList>
+                        }></FlatList> */}
                 </View>
                 
                 {/* ScrollView can only have one view in it */}
@@ -116,15 +116,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'black', 
         flexDirection: 'column'
     },
- 
+
     searchBar:{
         flex: 0.1,
-        flexDirection: 'row',
+        flexDirection: 'column',
         backgroundColor: 'white', 
         fontSize: 25
     },
     searchText:{
-        flex: 8,
+        flex: 1,
         borderWidth: 1
     },
     // Place where all cities' weather are shown
@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
         fontSize: 30
     },
     flatlist:{
+        flex: 7,
         paddingLeft: 15,
         marginTop: 15,
         paddingBottom: 15,
