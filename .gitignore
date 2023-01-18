@@ -65,3 +65,5 @@ buck-out/
 
 .env
 city_list.json
+
+android/
