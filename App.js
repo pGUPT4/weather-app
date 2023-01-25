@@ -6,11 +6,12 @@
  * @flow strict-local
  */
 
-import React, { useState, useEffect } from "react";
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import database, { firebase } from '@react-native-firebase/database'
-import { SearchBar } from "react-native-elements";
+import React, { useState, useEffect } from "react"
+import { auth } from "./firebase"
+import { SearchBar } from "react-native-elements"
+import {initializeApp} from "firebase/app"
+import firebase from "@react-native-firebase/app"
+
 import {
    View, 
    Text,
@@ -20,9 +21,7 @@ import {
    FlatList
  } from 'react-native';
 import {REACT_APP_API_KEY} from "@env";
- 
-const API_KEY = process.env.REACT_APP_API_KEY
-let cityName = `Noida`
+
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -35,9 +34,18 @@ const firebaseConfig = {
     measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const reference = firebase.database().ref("/0/country")
+let app;
+if(!firebase.apps.length){
+    app = firebase.initializeApp(firebaseConfig)
+    console.log("test")
+}else{
+    app = firebase.app()
+    console.log(app)
+}
+
+const API_KEY = process.env.REACT_APP_API_KEY
+let cityName = `Noida`
+
  
 function WeatherApp(){
 
